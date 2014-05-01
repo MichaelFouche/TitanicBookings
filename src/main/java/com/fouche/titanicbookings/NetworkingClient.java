@@ -347,7 +347,7 @@ public class NetworkingClient implements ActionListener
     {
         //main.tableNames[0] = "";
     }
-    public void createDB(String name)
+   /* public void createDB(String name)
     {
         try
         { 
@@ -363,7 +363,7 @@ public class NetworkingClient implements ActionListener
         {
             System.out.println("Could not create Tables in database: " + ioe.getMessage());
         }
-    }
+    }*/
     
     public void giveServerFlightDetails()
     {

@@ -15,7 +15,7 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-public class Main implements ActionListener
+public class Main 
 {
     private BufferedReader br;
     private BufferedWriter bw;
@@ -43,8 +43,8 @@ public class Main implements ActionListener
           f = new Flight[1000];
           t = new Ticket[1000];
           tableNames = new String[100];  
-          this.readSerFlight();
-          this.readSerTicket();
+          //this.readSerFlight();
+          //this.readSerTicket();
           //  m.writeSerFlight();
           
           ncObject = new NetworkingClient(this.f, this.t,this.numFlightRecords, this.numTicketRecords);
@@ -54,7 +54,7 @@ public class Main implements ActionListener
     }    
     
     
-    public void createMainGui()
+  /*  public void createMainGui()
     {
         jf = new JFrame();
         centerPanel = new JPanel(new GridLayout(1,2));
@@ -84,8 +84,7 @@ public class Main implements ActionListener
                 try
                 {
                     ncObject.createDB(tblNameTxt.getText());
-                    ncObject.giveServerFlightDetails();
-                    ncObject.giveServerTicketDetails();
+                    ncObject.getAllFlights();
                     ncObject.displayAllFlights();
                     jf.dispose();
                 }
@@ -99,9 +98,9 @@ public class Main implements ActionListener
                 JOptionPane.showMessageDialog(null, "Please enter a valid tablename in the textbox provided");
             }
         }
-    }
+    }*/
     
-    public void display()
+    /*public void display()
     {
         for(int i=0;i<numFlightRecords;i++)
         {
@@ -111,8 +110,8 @@ public class Main implements ActionListener
         {
             System.out.print(t[i].toString());
         }
-    }
-    public void readSerFlight()
+    }*/
+   /* public void readSerFlight()
     {
         try
         {
@@ -142,8 +141,8 @@ public class Main implements ActionListener
             JOptionPane.showMessageDialog(null, "Error while reading from serialized Flight object: \n"+e);
             try{input.close();}catch(Exception ee){}
         }               
-    }
-    public void writeSerFlight()
+    }*/
+   /*public void writeSerFlight()
     {
         try
         {
@@ -158,8 +157,8 @@ public class Main implements ActionListener
         {
             JOptionPane.showMessageDialog(null, "Error while writing to serialized file: \n"+e);
         }
-    }
-    public void readSerTicket()
+    }*/
+    /*public void readSerTicket()
     {
         try
         {
@@ -188,12 +187,15 @@ public class Main implements ActionListener
             JOptionPane.showMessageDialog(null, "Error while reading from serialized Flight object: \n"+e);
             try{input.close();}catch(Exception ee){}
         }       
-    }
+    }*/
     
     public static void main(String[]args)
     {
         Main m = new Main();
-        m.createMainGui();
+        m.ncObject = new NetworkingClient();
+        m.ncObject.openCommunication();
+        m.ncObject.getAllFlights();
+        m.ncObject.displayAllFlights();
     }
     
 }
