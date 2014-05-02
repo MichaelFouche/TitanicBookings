@@ -192,8 +192,7 @@ public class NetworkingClient implements ActionListener
                 f[i] = null;
                 f[i] = new Flight();
                 f[i] = (Flight) in.readObject(); 
-            }
-            
+            }            
            // System.out.println("SERVER: >> " + (String)in.readObject()+"");
         }
         catch (IOException ioe)
@@ -290,10 +289,7 @@ public class NetworkingClient implements ActionListener
                 }
             }
         }
-        
-       
-        
-        
+                
         //insert flights
         for(int i=0;i<amountFlights;i++)
         {
@@ -309,12 +305,9 @@ public class NetworkingClient implements ActionListener
                 {
                     dataTxt[i][j].setOpaque(true);
                     dataTxt[i][j].setBackground(Color.ORANGE);
-                }
-                
+                }                
             }
         }
-        
-        
     }
 
     public void openCommunication()
