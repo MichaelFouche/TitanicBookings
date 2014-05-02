@@ -47,8 +47,8 @@ public class Main
           //this.readSerTicket();
           //  m.writeSerFlight();
           
-          ncObject = new NetworkingClient(this.f, this.t,this.numFlightRecords, this.numTicketRecords);
-          ncObject.openCommunication();
+         // ncObject = new NetworkingClient(this.f, this.t,this.numFlightRecords, this.numTicketRecords);
+         // ncObject.openCommunication();
       
       
     }    
