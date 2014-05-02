@@ -191,8 +191,8 @@ public class NetworkingClient implements ActionListener
             for(int i=0;i<amountFlights;i++)
             {
                 f[i] = null;
-                f[i] = new Flight();
-                f[i] = (Flight) in.readObject(); 
+                f[i] = new com.fouche.titanicbookings.Flight();
+                f[i] = (com.fouche.titanicbookings.Flight) in.readObject(); 
             }            
            // System.out.println("SERVER: >> " + (String)in.readObject()+"");
         }
@@ -221,14 +221,14 @@ public class NetworkingClient implements ActionListener
             out.flush();
             amountFlights = ((int)in.readObject());
             
-            f = new Flight[amountFlights];
+            f = new com.fouche.titanicbookings.Flight[amountFlights];
             for(int i=0;i<amountFlights;i++)
             {
                 f[i] = null;
-                f[i] = new Flight();
-                f[i] = (Flight) in.readObject(); 
+                f[i] = new com.fouche.titanicbookings.Flight();
+                f[i] = (com.fouche.titanicbookings.Flight) in.readObject(); 
             }
-            
+            if(reportFlag){System.out.println("Amount Flights: "+amountFlights);}
             //System.out.println("SERVER: >> " + (String)in.readObject()+"");
         }
         catch (IOException ioe)
@@ -883,15 +883,15 @@ public class NetworkingClient implements ActionListener
         }
         
         addTopPanel(); 
-        t = new Ticket[rowsT];
+        t = new com.fouche.titanicbookings.Ticket[rowsT];
         try
         {
             countSeatsTaken = 0;
             for(int i=0;i<rowsT;i++)
             {
                 t[i] = null;
-                t[i] = new Ticket();
-                t[i] = (Ticket)in.readObject();
+                t[i] = new com.fouche.titanicbookings.Ticket();
+                t[i] = (com.fouche.titanicbookings.Ticket)in.readObject();
                        
                 
                 dataTTxt[i][0].setText(t[i].getTicketNumber()+"");

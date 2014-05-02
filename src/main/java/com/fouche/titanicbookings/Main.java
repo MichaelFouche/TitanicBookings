@@ -194,7 +194,6 @@ public class Main
         Main m = new Main();
         m.ncObject = new NetworkingClient();
         m.ncObject.openCommunication();
-        m.ncObject.getAllFlights();
         m.ncObject.displayAllFlights();
     }
     
