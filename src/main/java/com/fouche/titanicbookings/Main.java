@@ -10,6 +10,7 @@ package com.fouche.titanicbookings;
  *
  * @author foosh
  */
+import com.fouche.titanicbookings.NetworkingClient;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;

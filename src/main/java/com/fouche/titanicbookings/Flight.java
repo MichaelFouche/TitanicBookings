@@ -32,6 +32,7 @@ public class Flight implements Serializable
     {
     }
 
+ 
     public Flight(String flightDate, String departCity, String arriveCity) 
     {
         this.flightDate = flightDate;

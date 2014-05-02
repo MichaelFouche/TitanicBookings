@@ -48,8 +48,15 @@ public class NetworkingClient implements ActionListener
     
     //BOTTOM PANEL
     private JButton backBtn, saveBtn;
-    private Ticket[] t;
-    private Flight[] f;
+    
+    //Class Objects
+    private Ticket[] ticket;
+    private Flight[] flight;
+    private Passenger[] passenger;
+    private Receipt[] receipt;
+    private Meal[] meal;
+    
+    
     private boolean guiCreatedBool;
     private boolean ticketQuantitySelected;
     int amountFlights;
@@ -123,8 +130,8 @@ public class NetworkingClient implements ActionListener
         guiCreatedTicketBool = false;
         ticketQuantitySelected = false;
         filterCity = false;
-        f = fli;
-        t = tic;
+        flight = fli;
+        ticket = tic;
         amountFlights = amountF;
         amountTickets = amountT;
         
@@ -187,12 +194,12 @@ public class NetworkingClient implements ActionListener
             out.flush();
             amountFlights = ((int)in.readObject());
             
-            f = new Flight[amountFlights];
+            flight = new Flight[amountFlights];
             for(int i=0;i<amountFlights;i++)
             {
-                f[i] = null;
-                f[i] = new com.fouche.titanicbookings.Flight();
-                f[i] = (com.fouche.titanicbookings.Flight) in.readObject(); 
+                flight[i] = null;
+                flight[i] = new Flight();
+                flight[i] = (Flight) in.readObject(); 
             }            
            // System.out.println("SERVER: >> " + (String)in.readObject()+"");
         }
@@ -217,17 +224,24 @@ public class NetworkingClient implements ActionListener
         try
         {      
             if(reportFlag){System.out.println("Request from server: Send All Flights");}
-            out.writeObject("Send All Flights");    
+            out.writeObject("Send All Flights");  
+            if(reportFlag){System.out.println("getAllFlights 1");}
             out.flush();
+            if(reportFlag){System.out.println("getAllFlights 2");}
             amountFlights = ((int)in.readObject());
-            
-            f = new com.fouche.titanicbookings.Flight[amountFlights];
+            if(reportFlag){System.out.println("getAllFlights 3 -- "+ amountFlights);}
+            flight = new Flight[amountFlights];
+            if(reportFlag){System.out.println("getAllFlights 4");}
             for(int i=0;i<amountFlights;i++)
             {
-                f[i] = null;
-                f[i] = new com.fouche.titanicbookings.Flight();
-                f[i] = (com.fouche.titanicbookings.Flight) in.readObject(); 
+                flight[i] = null;
+                if(reportFlag){System.out.println("getAllFlights 5");}
+                flight[i] = new Flight();
+                if(reportFlag){System.out.println("getAllFlights 6");}
+                flight[i] =  (Flight) in.readObject(); 
+                System.out.println(flight[i].toString());
             }
+            if(reportFlag){System.out.println("getAllFlights 7");}
             if(reportFlag){System.out.println("Amount Flights: "+amountFlights);}
             //System.out.println("SERVER: >> " + (String)in.readObject()+"");
         }
@@ -237,8 +251,13 @@ public class NetworkingClient implements ActionListener
         }
         catch (ClassNotFoundException cnfe)
         {
-            System.out.println("Class not found: " + cnfe.getMessage());
+            System.out.println("Class not found1: " + cnfe);
         }
+        catch (Exception ee)
+        {
+            System.out.println(ee);
+        }
+        
         if(reportFlag){System.out.println("Method getAllFlights completed");}
     }
     public void displayAllFlights()
@@ -264,8 +283,8 @@ public class NetworkingClient implements ActionListener
         {
             for(int j=i+1;j<amountFlights;j++)
             {
-                datei = f[i].getFlightDate();
-                datej = f[j].getFlightDate();
+                datei = flight[i].getFlightDate();
+                datej = flight[j].getFlightDate();
                 StringTokenizer tokeni = new StringTokenizer(datei);
                 StringTokenizer tokenj = new StringTokenizer(datej);
                 dayi = Integer.parseInt(tokeni.nextToken("/"));
@@ -276,21 +295,21 @@ public class NetworkingClient implements ActionListener
                 yearj = Integer.parseInt(tokenj.nextToken("/"));
                 if(yeari>yearj)
                 {
-                    Flight temp = f[i];
-                    f[i] = f[j];
-                    f[j] = temp;
+                    Flight temp = flight[i];
+                    flight[i] = flight[j];
+                    flight[j] = temp;
                 }
                 else if(yeari==yearj && monthi>monthj)
                 {
-                    Flight temp = f[i];
-                    f[i] = f[j];
-                    f[j] = temp;
+                    Flight temp = flight[i];
+                    flight[i] = flight[j];
+                    flight[j] = temp;
                 }
                 else if(yeari==yearj && monthi==monthj &&dayi>dayj)
                 {
-                    Flight temp = f[i];
-                    f[i] = f[j];
-                    f[j] = temp;
+                    Flight temp = flight[i];
+                    flight[i] = flight[j];
+                    flight[j] = temp;
                 }
             }
         }
@@ -298,13 +317,13 @@ public class NetworkingClient implements ActionListener
         //insert flights
         for(int i=0;i<amountFlights;i++)
         {
-            dataTxt[i][0].setText(f[i].getFlightNumber()+"");
-            dataTxt[i][1].setText(f[i].getFlightDate());
-            dataTxt[i][2].setText(f[i].getDepartCity());
-            dataTxt[i][3].setText(f[i].getArriveCity());
-            dataTxt[i][4].setText(f[i].getSeatsAvailable()+" / "+f[i].getSeatSold());
+            dataTxt[i][0].setText(flight[i].getFlightNumber()+"");
+            dataTxt[i][1].setText(flight[i].getFlightDate());
+            dataTxt[i][2].setText(flight[i].getDepartCity());
+            dataTxt[i][3].setText(flight[i].getArriveCity());
+            dataTxt[i][4].setText(flight[i].getSeatsAvailable()+" / "+flight[i].getSeatSold());
             
-            if(f[i].isCancelled())
+            if(flight[i].isCancelled())
             {
                 for(int j=0;j<5;j++)
                 {
@@ -373,7 +392,7 @@ public class NetworkingClient implements ActionListener
             out.writeObject((amountFlights+"").toString());
             for(int i=0;i<amountFlights;i++)
             {
-                out.writeObject(f[i]);
+                out.writeObject(flight[i]);
             }
             
             out.flush();
@@ -400,7 +419,7 @@ public class NetworkingClient implements ActionListener
             out.writeObject((amountTickets+"").toString());
             for(int i=0;i<amountTickets;i++)
             {
-                out.writeObject(t[i]);
+                out.writeObject(ticket[i]);
             }            
             out.flush();
             //System.out.println("SERVER: >> " + (String)in.readObject()+"");
@@ -850,16 +869,24 @@ public class NetworkingClient implements ActionListener
             jf.validate();
             jf.repaint(); 
     }
-    
+    @Override
+protected java.io.ObjectStreamClass readClassDescriptor() 
+        throws IOException, ClassNotFoundException {
+    ObjectStreamClass desc = super.readClassDescriptor();
+    if (desc.getName().equals("oldpkg.Widget")) {
+        return ObjectStreamClass.lookup(newpkg.Widget.class);
+    }
+    return desc;
+};
     public void retrieveAllTickets(int currentActiveflightNumber)
     {
         int flightNumber = currentActiveflightNumber;
         boolean flightCancelled = false;
         for(int i=0;i<amountFlights;i++)
         {
-            if(f[i].getFlightNumber() ==flightNumber)
+            if(flight[i].getFlightNumber() ==flightNumber)
             {
-                if(f[i].isCancelled())
+                if(flight[i].isCancelled())
                 {
                     flightCancelled = true;
                 }
@@ -883,22 +910,23 @@ public class NetworkingClient implements ActionListener
         }
         
         addTopPanel(); 
-        t = new com.fouche.titanicbookings.Ticket[rowsT];
+        ticket = new Ticket[rowsT];
         try
         {
             countSeatsTaken = 0;
             for(int i=0;i<rowsT;i++)
             {
-                t[i] = null;
-                t[i] = new com.fouche.titanicbookings.Ticket();
-                t[i] = (com.fouche.titanicbookings.Ticket)in.readObject();
+                ticket[i] = null;
+                ticket[i] = new Ticket();
+                
+                ticket[i] = (Ticket)in.readObject();
                        
                 
-                dataTTxt[i][0].setText(t[i].getTicketNumber()+"");
-                dataTTxt[i][1].setText(t[i].getPassengerName());
-                dataTTxt[i][2].setText(t[i].getPassengerSurname());
-                dataTTxt[i][3].setText(t[i].getSeatsBooked()+"");
-                dataTTxt[i][4].setText(t[i].getAmountPaid()+"");                
+                dataTTxt[i][0].setText(ticket[i].getTicketNumber()+"");
+                dataTTxt[i][1].setText(ticket[i].getPassengerName());
+                dataTTxt[i][2].setText(ticket[i].getPassengerSurname());
+                dataTTxt[i][3].setText(ticket[i].getSeatsBooked()+"");
+                dataTTxt[i][4].setText(ticket[i].getAmountPaid()+"");                
                 
                 if(flightCancelled)
                 {
@@ -909,7 +937,7 @@ public class NetworkingClient implements ActionListener
                     }
                     
                 }
-                countSeatsTaken= countSeatsTaken+( Integer.parseInt( t[i].getSeatsBooked()+""));
+                countSeatsTaken= countSeatsTaken+( Integer.parseInt( ticket[i].getSeatsBooked()+""));
             }
             addCenterPanelTicket();
             //System.out.println("Server: >>"+(String)in.readObject());  
@@ -1279,9 +1307,9 @@ public class NetworkingClient implements ActionListener
                 double flightPrice = 0.00;
                 for(int i=0;i<amountFlights;i++)
                 {
-                    if((f[i].getFlightNumber())==currentActiveflightNumber)
+                    if((flight[i].getFlightNumber())==currentActiveflightNumber)
                     {
-                        flightPrice = f[i].getSeatPrice();
+                        flightPrice = flight[i].getSeatPrice();
                     }
                 }
                 amountTTxt.setText((flightPrice*(Integer.parseInt((String)quantityTicTCbo.getSelectedItem())))+"" );
@@ -1298,8 +1326,8 @@ public class NetworkingClient implements ActionListener
                     if(dialogResult == JOptionPane.YES_OPTION)
                     {
                         
-                        int ticketNumber = t[i].getTicketNumber();
-                        int seatsBooked = t[i].getSeatsBooked() ;
+                        int ticketNumber = ticket[i].getTicketNumber();
+                        int seatsBooked = ticket[i].getSeatsBooked() ;
                         
                         out.writeObject("Delete Ticket");
                         out.writeObject(currentActiveflightNumber+"");
