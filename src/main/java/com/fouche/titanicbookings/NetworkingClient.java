@@ -84,7 +84,8 @@ public class NetworkingClient implements ActionListener
     
     //END OF TICKET GUI
     
-    
+    //Reporting
+    private boolean reportFlag = true;
     
     //NETWORKING VARIABLES
     private Socket server;
@@ -206,13 +207,16 @@ public class NetworkingClient implements ActionListener
     }
     public void getAllFlights()
     {
+        if(reportFlag){System.out.println("Method getAllFlights Entered");}
         if(!guiCreatedBool)
         {
+            if(reportFlag){System.out.println("Method createFlightGui called");}
             createFlightGui();
         }
         //request all flights
         try
-        {             
+        {      
+            if(reportFlag){System.out.println("Request from server: Send All Flights");}
             out.writeObject("Send All Flights");    
             out.flush();
             amountFlights = ((int)in.readObject());
@@ -235,6 +239,7 @@ public class NetworkingClient implements ActionListener
         {
             System.out.println("Class not found: " + cnfe.getMessage());
         }
+        if(reportFlag){System.out.println("Method getAllFlights completed");}
     }
     public void displayAllFlights()
     {
